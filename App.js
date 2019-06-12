@@ -1,23 +1,37 @@
 import React, {Component} from 'react';
-import { Text, View, StyleSheet, TextInput} from 'react-native';
+import { Text, View, StyleSheet, TextInput, Platform, ScrollView, FlatList, Image} from 'react-native';
 
-const restaurants = [
-  {name: 'Taj Restaurant', address: '123 xyz street'},
-  {name: 'Veg Treat', address: '333 abc street'},
-  {name: 'Sahara treat', address: '888 aaa street'},
-  {name: 'Mumbai Spice', address: '000 daa street'}
-]
+import Header from 'components/Header';
+
+import axios from 'axios';
+
+import ResImage from 'images/cutlery.png';
+
+import RestaurantRow from 'components/RestaurantRow';
 
 export default class App extends Component {
 
-  state = {
-search: null
+
+state = {
+search: null,
+restaurants: [],
+  }
+
+  componentDidMount() {
+    axios.get('http://opentable.herokuapp.com/api/restaurants?country=US')
+    .then(response => {
+      this.setState({ restaurants: response.data.restaurants});
+    })
   }
 
   render() {
     return (
-     <View style = {{backgroundColor: 'white', flex: 1}}>
-       <Text style = {styles.header}>Restaurant Review</Text>
+     <View style = {{flex: 1}}>
+       <View style ={{ marginTop: 70, alignItems: 'center'}}>
+       <Image source = {ResImage} style = {{ height: 120, width: 120 }}></Image>
+       </View>
+   
+       <Header />
        <TextInput style = {styles.input} 
        placeholder="Live Search"
        onChangeText={
@@ -26,27 +40,19 @@ search: null
        value = {this.state.search}
          />
 
-       {
-         restaurants.filter(place => {
-           return !this.state.search || place.name.toLowerCase().indexOf(this.state.search.toLowerCase()) > -1
-         }).map((place, index) => {
-         return (
-             <View key = {place.name} style = {[styles.row, {backgroundColor: index % 2 === 0 ? 'white' : '#F3F3F7'}]}>
-               <View style = {styles.edges}>
-               <Text>{index + 1}</Text> 
-               </View>
-               <View style = {styles.nameAddress}>
-               <Text>{place.name}</Text>
-               <Text style = {styles.addressText}>{place.address}</Text>
-               </View>
-               <View style = {styles.edges}>
-              <Text>Info</Text>
-              </View>
-             </View>
-         )
-         })
-       }
-
+<FlatList
+          data = {
+            this.state.restaurants.filter(place => {
+              return !this.state.search ||
+                place.name.toLowerCase().indexOf(this.state.search.toLowerCase()) > -1
+            })
+          }
+          renderItem={({ item, index }) => 
+            <RestaurantRow place={item} index={index} />
+          }
+          keyExtractor={item => item.name}
+          initialNumToRender={16}
+        />
      </View>
     );
   }
@@ -78,7 +84,6 @@ const styles = StyleSheet.create({
     color: 'grey'
   },
   input: {
-    marginBottom: 30,
     padding: 10,
     paddingHorizontal: 20,
     fontSize: 16,
