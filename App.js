@@ -1,95 +1,29 @@
 import React, {Component} from 'react';
-import { Text, View, StyleSheet, TextInput, Platform, ScrollView, FlatList, Image} from 'react-native';
 
-import Header from 'components/Header';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
 
-import axios from 'axios';
+import RestaurantList from './src/components/RestaurantList';
 
-import ResImage from 'images/cutlery.png';
+import RestaurantInfo from './src/components/RestaurantInfo';
 
-import RestaurantRow from 'components/RestaurantRow';
+const NavigationStack = createStackNavigator({
 
-export default class App extends Component {
+  Home: { screen: RestaurantList },
+  Info: { screen: RestaurantInfo }
 
-
-state = {
-search: null,
-restaurants: [],
+},{
+  navigationOptions :{
+    headerStyle: {
+      backgroundColor: '#0066CC',
+      color: '#FFF'
+    },
+    headerTintColor: '#FFF',
+    headerTitleStyle: {
+      color: '#FFF'
+    }
   }
+});
 
-  componentDidMount() {
-    axios.get('http://opentable.herokuapp.com/api/restaurants?country=US')
-    .then(response => {
-      this.setState({ restaurants: response.data.restaurants});
-    })
-  }
+const App = createAppContainer(NavigationStack);
 
-  render() {
-    return (
-     <View style = {{flex: 1}}>
-       <View style ={{ marginTop: 70, alignItems: 'center'}}>
-       <Image source = {ResImage} style = {{ height: 120, width: 120 }}></Image>
-       </View>
-   
-       <Header />
-       <TextInput style = {styles.input} 
-       placeholder="Live Search"
-       onChangeText={
-         text => {this.setState({search: text})}  
-       }
-       value = {this.state.search}
-         />
-
-<FlatList
-          data = {
-            this.state.restaurants.filter(place => {
-              return !this.state.search ||
-                place.name.toLowerCase().indexOf(this.state.search.toLowerCase()) > -1
-            })
-          }
-          renderItem={({ item, index }) => 
-            <RestaurantRow place={item} index={index} />
-          }
-          keyExtractor={item => item.name}
-          initialNumToRender={16}
-        />
-     </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-
-  header: {
-    padding : 40,
-    fontSize: 30,
-    textAlign: 'center',
-    color: '#0066CC',
-    fontWeight: '300' 
-  },
-  row: {
-    flexDirection:'row'
-  },
-  edges: {
-    flex:1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 5
-  },
-  nameAddress: { 
-    flexDirection : 'column', 
-    flex: 8
-  },
-  addressText: {
-    color: 'grey'
-  },
-  input: {
-    padding: 10,
-    paddingHorizontal: 20,
-    fontSize: 16,
-    color:'#444',
-    borderBottomWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#F5F5F5'
-  }
-})
+export default App;

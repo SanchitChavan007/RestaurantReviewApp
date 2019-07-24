@@ -12,7 +12,7 @@ const Stars = ({ price }) => {
             {
                 stars.map((_, i) => {
 
-                    const name = Math.floor(price) > i/2 ? 'star' : 'star-half';
+                    const name = Math.floor(price) > i ? 'star' : 'star-half';
                     return <Icon key = {i} name = {name} color="#FFD64C" />
                     
                 })

@@ -11,7 +11,6 @@ import RestaurantRow from '../components/RestaurantRow';
 
 export default class RestaurantList extends Component {
 
-
 state = {
 search: null,
 restaurants: [],
@@ -26,7 +25,7 @@ restaurants: [],
 
   render() {
     return (
-     <View style = {{flex: 1}}>
+     <View style = {{flex: 1, backgroundColor: "#FFFFFF"}}>
        <View style ={{ marginTop: 70, alignItems: 'center'}}>
        <Image source = {ResImage} style = {{ height: 120, width: 120 }}></Image>
        </View>
@@ -48,7 +47,7 @@ restaurants: [],
             })
           }
           renderItem={({ item, index }) => 
-            <RestaurantRow place={item} index={index} />
+            <RestaurantRow place={item} index={index} navigation = {this.props.navigation} />
           }
           keyExtractor={item => item.name}
           initialNumToRender={16}
