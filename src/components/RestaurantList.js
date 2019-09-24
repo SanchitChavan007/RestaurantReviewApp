@@ -11,6 +11,10 @@ import RestaurantRow from '../components/RestaurantRow';
 
 export default class RestaurantList extends Component {
 
+  static navigationOptions = {
+    header: null
+  }
+
 state = {
 search: null,
 restaurants: [],

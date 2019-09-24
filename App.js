@@ -6,13 +6,11 @@ import RestaurantList from './src/components/RestaurantList';
 
 import RestaurantInfo from './src/components/RestaurantInfo';
 
-const NavigationStack = createStackNavigator({
-
+const AppNavigator =  createStackNavigator({
   Home: { screen: RestaurantList },
   Info: { screen: RestaurantInfo }
-
-},{
-  navigationOptions :{
+}, {
+  navigationOptions: {
     headerStyle: {
       backgroundColor: '#0066CC',
       color: '#FFF'
@@ -22,8 +20,7 @@ const NavigationStack = createStackNavigator({
       color: '#FFF'
     }
   }
-});
+})
 
-const App = createAppContainer(NavigationStack);
+export default createAppContainer(AppNavigator);
 
-export default App;

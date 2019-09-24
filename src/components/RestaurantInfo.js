@@ -15,7 +15,15 @@ import Stars from '../components/Stars';
 export default class RestaurantInfo extends Component {
 
     static navigationOptions ={
-        title: 'Restaurant Info'
+        title: 'Restaurant Info',
+        headerStyle:{
+            backgroundColor: '#0066CC',
+            color:'#FFF'
+        },
+        headerTintColor: '#FFF',
+        headerTitleStyle:{
+            color: '#FFF'
+        }
     }
 
     render(){
