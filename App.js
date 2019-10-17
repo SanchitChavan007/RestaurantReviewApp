@@ -1,26 +1,52 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import {
+  createStackNavigator,
+  createAppContainer,
+  createBottomTabNavigator
+} from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import RestaurantList from 'components/RestaurantList';
+import RestaurantInfo from 'components/RestaurantInfo';
 
-import RestaurantList from './src/components/RestaurantList';
+import About from 'components/About';
+import AddReview from 'components/AddReview';
 
-import RestaurantInfo from './src/components/RestaurantInfo';
-
-const AppNavigator =  createStackNavigator({
+const List = createStackNavigator({
   Home: { screen: RestaurantList },
-  Info: { screen: RestaurantInfo }
+  Info: { screen: RestaurantInfo },
+  AddReview: { screen: AddReview }
 }, {
-  navigationOptions: {
+  defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#0066CC',
-      color: '#FFF'
+      backgroundColor: '#0066cc',
+      color: '#fff'
     },
-    headerTintColor: '#FFF',
-    headerTitleStyle: {
-      color: '#FFF'
+    headerTintColor: '#fff',
+    headerTitleStyle: { color: '#fff' }
+  }
+});
+
+const TabNavigator = createBottomTabNavigator({
+  List: { screen: List },
+  About: { screen: About}
+}, {
+  defaultNavigationOptions: ({ navigation }) => {
+    return {
+      tabBarIcon: ({ tintColor }) => {
+        const route = navigation.state.routeName;
+        console.log('route', route);
+        const name = {
+          'List': 'list',
+          'About':'info-circle'
+        }[route]
+        return <Icon name={name} color={tintColor} size={22} />
+      },
+      tabBarOptions: {
+        activeBackgroundColor: '#E6F0FA'
+      }
     }
   }
-})
+});
 
-export default createAppContainer(AppNavigator);
-
+export default createAppContainer(TabNavigator);

@@ -6,7 +6,8 @@ import {
     Text,
     ScrollView,
     Image,
-    StyleSheet
+    StyleSheet,
+    TouchableOpacity
 
 } from 'react-native';
 
@@ -27,6 +28,10 @@ export default class RestaurantInfo extends Component {
     }
 
     render(){
+
+        addReview = () => {
+            this.props.navigation.navigate('AddReview')
+          }
 
         const place = this.props.navigation.getParam('place')
         return(
@@ -49,6 +54,10 @@ export default class RestaurantInfo extends Component {
                             {place.address}
                         </Text>
                         <Stars price = {place.price}></Stars>
+                        <TouchableOpacity style={styles.button}
+                            onPress={this.addReview}>
+                            <Text style={styles.buttonText}>Add Review</Text>
+                        </TouchableOpacity>
                     </View>
 
                 </View>
@@ -87,5 +96,19 @@ const styles = StyleSheet.create({
         width:200,
         height:200,
         margin:20
-    }
+    },
+    buttonText: {
+        color: '#0066CC',
+        fontSize: 12,
+        textAlign:'center'
+      },
+      button : {
+        borderWidth: 1,
+        borderColor: '#0066CC',
+        borderRadius: 14,
+        paddingHorizontal: 10,
+        paddingVertical: 3,
+        backgroundColor: '#fff',
+        marginTop:10
+      }
 })
